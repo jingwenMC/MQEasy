@@ -1,0 +1,6 @@
+name: MQEasy
+version: @version@
+main: top.jingwenmc.mqeasy.bukkit.MQEasyBukkit
+authors: [ jingwenMC ]
+description: Message Queue utilities for Minecraft servers
+website: www.jingwenmc.top

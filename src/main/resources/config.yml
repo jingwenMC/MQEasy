@@ -1,0 +1,14 @@
+#MQEasy Config File
+version: 1a
+
+broker:
+  enable: false
+  ip: 127.0.0.1
+  port: 50000
+
+remote:
+  ip: 127.0.0.1
+  port: 50000
+
+id: server1
+password: editmeplz
