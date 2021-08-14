@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class BrokerConfigurationBean {
-    private boolean isEnabled;
-    private ConnectionConfigurationBean connectionConfiguration;
+public class ConnectionConfigurationInfo {
+    private String ip;
+    private String port;
 }

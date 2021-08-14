@@ -2,16 +2,48 @@ package top.jingwenmc.mqeasy.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import lombok.Setter;
+import top.jingwenmc.mqeasy.common.messaging.MQEasyMessenger;
+import top.jingwenmc.mqeasy.common.platform.OnlineValidator;
 import top.jingwenmc.mqeasy.common.platform.PlatformInfo;
+import top.jingwenmc.mqeasy.common.plugin.PluginManager;
+
+import java.util.logging.Logger;
 
 public class MQEasyCommon {
-    public MQEasyCommon(PlatformInfo platformInfo) {
-        this.platformInfo = platformInfo;
-    }
-
     @Getter
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Setter
     @Getter
-    private final PlatformInfo platformInfo;
+    private PlatformInfo platformInfo;
+
+    @Getter
+    @Setter
+    private boolean loaded = false;
+
+    @Getter
+    @Setter
+    private Logger logger;
+
+    @Getter
+    @Setter
+    private MQEasyMessenger messenger;
+
+    @Setter
+    private OnlineValidator onlineValidator;
+
+    @Getter
+    private final PluginManager pluginManager = new PluginManager();
+
+    @Getter
+    private static final MQEasyCommon common = new MQEasyCommon();
+
+    public static final String MQEASY_DEFAULT_USERNAME = "mqeasysa";
+
+    public static final String MQEASY_GLOBAL_TOPIC = "mqeasyglobal";
+
+    public static boolean isOnline(String player) {
+        return getCommon().onlineValidator.isOnline(player);
+    }
 }

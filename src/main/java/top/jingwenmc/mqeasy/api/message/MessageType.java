@@ -1,0 +1,6 @@
+package top.jingwenmc.mqeasy.api.message;
+
+public enum MessageType {
+    SERVER_WITH_RETURN,SERVER_NO_RETURN,PLAYER_WITH_RETURN,PLAYER_NO_RETURN
+    ,RETURNING_MESSAGE_SERVER,RETURNING_MESSAGE_PLAYER
+}

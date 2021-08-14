@@ -12,3 +12,4 @@ remote:
 
 id: server1
 password: editmeplz
+debug: false
