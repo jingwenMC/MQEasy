@@ -16,10 +16,22 @@ public class MQEasyMessenger {
         factory = new ActiveMQConnectionFactory("tcp://"+ipport);
     }
 
-    public void initListener() throws JMSException {
-        if(messageListener != null)return;
-        messageListener = new MQEasyMessageListener();
-        MQEasyCommon.getCommon().getLogger().info("Listener is now OK.");
+    public void initListener() throws InterruptedException {
+        try {
+            if (messageListener != null) return;
+            messageListener = new MQEasyMessageListener();
+            MQEasyCommon.getCommon().getLogger().info("Listener is now OK.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("===============[MQEasy-Init-Error]===============");
+            System.err.println("Error connecting broker.");
+            System.err.println("Please check your connection or your configuration.");
+            System.err.println("Plugin(s) may not work properly.");
+            System.err.println("Try to reconnect in 15 seconds...");
+            System.err.println("===============[MQEasy-Init-Error]===============");
+            Thread.sleep(15000);
+            initListener();
+        }
     }
 
     public void produceMessage(CommonMessage<?> message) {

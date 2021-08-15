@@ -112,7 +112,7 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
         System.err.println("Error checking message.");
         System.err.println("Please check your connection.");
         System.err.println("Plugin(s) may not work properly.");
-        System.err.println("Try to reconnect in 15 seconds.");
+        System.err.println("Try to reconnect in 15 seconds...");
         System.err.println("===============[MQEasy-Runtime-Error]===============");
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
