@@ -1,4 +1,5 @@
 #MQEasy Config File
+#Configuration Guide: https://github.com/jingwenMC/MQEasy/wiki/Configuration
 version: 1a
 
 broker:
