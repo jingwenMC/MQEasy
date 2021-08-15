@@ -1,10 +1,9 @@
-package top.jingwenmc.mqeasy.bukkit;
+package top.jingwenmc.mqeasy.bungee;
 
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import top.jingwenmc.mqeasy.bukkit.configuration.BukkitConfigurationManager;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
+import top.jingwenmc.mqeasy.bungee.configuration.BungeeConfigurationManager;
 import top.jingwenmc.mqeasy.common.MQEasyCommon;
 import top.jingwenmc.mqeasy.common.broker.MQEasyBrokerService;
 import top.jingwenmc.mqeasy.common.configuration.BrokerConfigurationInfo;
@@ -13,9 +12,7 @@ import top.jingwenmc.mqeasy.common.messaging.MQEasyMessenger;
 import top.jingwenmc.mqeasy.common.platform.PlatformInfo;
 import top.jingwenmc.mqeasy.common.platform.PlatformType;
 
-import javax.jms.JMSException;
-
-public final class MQEasyBukkit extends JavaPlugin {
+public class MQEasyBungee extends Plugin {
 
     @Override
     public void onEnable() {
@@ -25,11 +22,9 @@ public final class MQEasyBukkit extends JavaPlugin {
         try {
             //load configuration and set logger
             MQEasyCommon.getCommon().setLogger(getLogger());
-            saveDefaultConfig();
-            reloadConfig();
-            ConfigurationManager configurationManager = new BukkitConfigurationManager();
+            ConfigurationManager configurationManager = new BungeeConfigurationManager();
             configurationManager.validateVersion();
-            MQEasyCommon.getCommon().setPlatformInfo(new PlatformInfo(PlatformType.BUKKIT
+            MQEasyCommon.getCommon().setPlatformInfo(new PlatformInfo(PlatformType.BUNGEE
                     , configurationManager.loadConfiguration()));
         }catch (Throwable t) {
             t.printStackTrace();
@@ -38,7 +33,7 @@ public final class MQEasyBukkit extends JavaPlugin {
             System.err.println("Please check configuration file.");
             System.err.println("Plugin will not enable.");
             System.err.println("===============[MQEasy-Init-Error]===============");
-            Bukkit.getPluginManager().disablePlugin(this);
+            onDisable();
             return;
         }
         if(MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getBrokerConfiguration().isEnabled()) {
@@ -54,15 +49,14 @@ public final class MQEasyBukkit extends JavaPlugin {
                 System.err.println("Please check configuration file or your connection.");
                 System.err.println("Plugin will not enable.");
                 System.err.println("===============[MQEasy-Init-Error]===============");
-                Bukkit.getPluginManager().disablePlugin(this);
+                onDisable();
                 return;
             }
         }
         getLogger().info("Connecting to broker service...");
         try {
             //try to connect broker
-            MQEasyCommon.getCommon().setMessenger(new MQEasyMessenger(
-                    MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getIpport()));
+            MQEasyCommon.getCommon().setMessenger(new MQEasyMessenger(MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getIpport()));
             MQEasyCommon.getCommon().getMessenger().initListener();
         }catch (Throwable t) {
             t.printStackTrace();
@@ -71,13 +65,13 @@ public final class MQEasyBukkit extends JavaPlugin {
             System.err.println("Please check configuration file or your connection.");
             System.err.println("Plugin will not enable.");
             System.err.println("===============[MQEasy-Init-Error]===============");
-            Bukkit.getPluginManager().disablePlugin(this);
+            onDisable();
             return;
         }
         getLogger().info("Finalizing...");
         MQEasyCommon.getCommon().setOnlineValidator(player -> {
             boolean online = false;
-            for(Player player1 : Bukkit.getOnlinePlayers()) {
+            for(ProxiedPlayer player1 : getProxy().getPlayers()) {
                 if(player1.getName().equals(player))online = true;
             }
             return online;
@@ -87,11 +81,9 @@ public final class MQEasyBukkit extends JavaPlugin {
         getLogger().info("+++++++++++++++[MQEasy-Load-Complete]+++++++++++++++");
         getLogger().info("MQEasy Load Complete!");
         getLogger().info("Version:"+this.getDescription().getVersion());
-        StringBuilder builder = new StringBuilder();
-        for(String s : this.getDescription().getAuthors()) builder.append(s).append(" ");
-        getLogger().info("Authors:"+ builder);
+        getLogger().info("Authors:"+ this.getDescription().getAuthor());
         getLogger().info("Github:"+ "https://github.com/jingwenMC/MQEasy");
-        getLogger().info("Running on Bukkit");
+        getLogger().info("Running on BungeeCord");
         getLogger().info("+++++++++++++++[MQEasy-Load-Complete]+++++++++++++++");
     }
 
@@ -116,14 +108,12 @@ public final class MQEasyBukkit extends JavaPlugin {
         getLogger().info("+++++++++++++++[MQEasy-Disable-Complete]+++++++++++++++");
         getLogger().info("MQEasy Disable Complete!");
         getLogger().info("Version:"+this.getDescription().getVersion());
-        StringBuilder builder = new StringBuilder();
-        for(String s : this.getDescription().getAuthors()) builder.append(s).append(" ");
-        getLogger().info("Authors:"+ builder);
+        getLogger().info("Authors:"+ this.getDescription().getAuthor());
         getLogger().info("Github:"+ "https://github.com/jingwenMC/MQEasy");
-        getLogger().info("Running on Bukkit");
+        getLogger().info("Running on BungeeCord");
         getLogger().info("+++++++++++++++[MQEasy-Disable-Complete]+++++++++++++++");
     }
 
     @Getter
-    private static MQEasyBukkit instance;
+    private static MQEasyBungee instance;
 }

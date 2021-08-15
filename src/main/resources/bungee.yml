@@ -1,0 +1,5 @@
+name: MQEasy
+version: @version@
+main: top.jingwenmc.mqeasy.bungee.MQEasyBungee
+author: jingwenMC
+description: Send bukkit command to bungee

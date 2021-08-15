@@ -17,9 +17,7 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
     private final Session session;
 
     public MQEasyMessageListener() throws JMSException {
-        connection = MQEasyCommon.getCommon().getMessenger().factory.createConnection(
-                MQEasyCommon.MQEASY_DEFAULT_USERNAME,MQEasyCommon.getCommon().getMessenger().password
-        );
+        connection = MQEasyCommon.getCommon().getMessenger().factory.createConnection();
         connection.setExceptionListener(this);
         connection.start();
         session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);

@@ -39,11 +39,15 @@ public class MQEasyCommon {
     @Getter
     private static final MQEasyCommon common = new MQEasyCommon();
 
-    public static final String MQEASY_DEFAULT_USERNAME = "mqeasysa";
-
     public static final String MQEASY_GLOBAL_TOPIC = "mqeasyglobal";
+
+    public static final String MQEASY_CONFIG_VERSION = "1a";
 
     public static boolean isOnline(String player) {
         return getCommon().onlineValidator.isOnline(player);
+    }
+
+    public static void debug(String message) {
+        if(getCommon().getPlatformInfo().getConfigurationInfo().isDebug())getCommon().getLogger().info("DEBUG|"+message);
     }
 }

@@ -1,37 +1,41 @@
 package top.jingwenmc.mqeasy.common.messaging;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import top.jingwenmc.mqeasy.api.message.CommonMessage;
 import top.jingwenmc.mqeasy.common.MQEasyCommon;
-import top.jingwenmc.mqeasy.common.configuration.ConnectionConfigurationInfo;
 
 import javax.jms.*;
 import java.util.UUID;
 
 public class MQEasyMessenger {
-    final ConnectionFactory factory;
-    final String password;
+    ConnectionFactory factory;
     MQEasyMessageListener messageListener;
-    public MQEasyMessenger(ConnectionConfigurationInfo connectionConfigurationInfo, String password) throws JMSException {
-        factory = new ActiveMQConnectionFactory("tcp://"+connectionConfigurationInfo.getIp()
-                +":"+connectionConfigurationInfo.getPort());
-        this.password = password;
-        Connection testConnection = factory.createConnection(MQEasyCommon.MQEASY_DEFAULT_USERNAME,password);
-        testConnection.start();
-        testConnection.close();
-        MQEasyCommon.getCommon().getLogger().info("MQ Connection Test Passed.");
+    public MQEasyMessenger(String ipport) {
+        MQEasyCommon.debug("Connecting:"+"tcp://"+ipport);
+        factory = new ActiveMQConnectionFactory("tcp://"+ipport);
+    }
+
+    public void initListener() throws JMSException {
+        if(messageListener != null)return;
         messageListener = new MQEasyMessageListener();
         MQEasyCommon.getCommon().getLogger().info("Listener is now OK.");
     }
 
     public void produceMessage(CommonMessage<?> message) {
+        try {
+            MQEasyCommon.debug("Produce:"+MQEasyCommon.getCommon().getObjectMapper().writeValueAsString(message));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             try {
-                Connection connection = factory.createConnection(MQEasyCommon.MQEASY_DEFAULT_USERNAME, password);
+                Connection connection = factory.createConnection();
                 connection.start();
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
                 Queue queue = session.createQueue(message.getTo());
                 MessageProducer producer = session.createProducer(queue);
+                if(message.getId().isEmpty())
                 message.setId(UUID.randomUUID().toString());
                 TextMessage textMessage = session.createTextMessage(MQEasyCommon.getCommon()
                     .getObjectMapper().writeValueAsString(message));
@@ -50,14 +54,20 @@ public class MQEasyMessenger {
         }).start();
     }
 
-    public void createTopic(CommonMessage<?> message) throws JMSException {
+    public void createTopic(CommonMessage<?> message) {
+        try {
+            MQEasyCommon.debug("Topic:"+MQEasyCommon.getCommon().getObjectMapper().writeValueAsString(message));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             try {
-                Connection connection = factory.createConnection(MQEasyCommon.MQEASY_DEFAULT_USERNAME, password);
+                Connection connection = factory.createConnection();
                 connection.start();
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
                 Topic topic = session.createTopic(MQEasyCommon.MQEASY_GLOBAL_TOPIC);
                 MessageProducer producer = session.createProducer(topic);
+                if(message.getId().isEmpty())
                 message.setId(UUID.randomUUID().toString());
                 TextMessage textMessage = session.createTextMessage(MQEasyCommon.getCommon()
                         .getObjectMapper().writeValueAsString(message));

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'top.jingwenmc'
-version = '1.0.0-INDEV'
+version = '1.0.0-BETA'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -25,11 +25,12 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
-    compileOnly 'net.md-5:bungeecord-api:1.16-R0.3'
+    compileOnly 'net.md-5:bungeecord-api:1.16-R0.4'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    implementation 'org.apache.activemq:activemq-core:5.7.0'
     implementation 'org.apache.activemq:activemq-broker:5.16.2'
+    implementation 'org.apache.activemq:activemq-pool:5.16.2'
+    implementation 'org.apache.activemq:activemq-kahadb-store:5.16.2'
 }
 
 processResources {

@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class BrokerConfigurationInfo {
     private boolean isEnabled;
-    private ConnectionConfigurationInfo connectionConfiguration;
+    private String ipport;
 }

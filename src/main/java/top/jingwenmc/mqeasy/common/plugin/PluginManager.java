@@ -4,10 +4,10 @@ import top.jingwenmc.mqeasy.api.message.CommonMessage;
 import top.jingwenmc.mqeasy.api.message.Receipt;
 import top.jingwenmc.mqeasy.api.plugin.MQEasyPlugin;
 import top.jingwenmc.mqeasy.api.plugin.MQEasyPluginInfo;
+import top.jingwenmc.mqeasy.common.MQEasyCommon;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class PluginManager {
     private final Map<String, MQEasyPlugin> pluginMap = new HashMap<>();
@@ -17,6 +17,15 @@ public class PluginManager {
         String pluginName = info.getName();
         if(pluginMap.containsKey(pluginName))return false;
         pluginMap.put(pluginName,mqEasyPlugin);
+        MQEasyCommon.getCommon().getLogger().info("+++++++++++++++[MQEasy-New-Plugin]+++++++++++++++");
+        MQEasyCommon.getCommon().getLogger().info("Name:"+mqEasyPlugin.getPluginInfo().getName());
+        StringBuilder builder = new StringBuilder();
+        for(String s : mqEasyPlugin.getPluginInfo().getAuthors()) builder.append(s).append(" ");
+        MQEasyCommon.getCommon().getLogger().info("Authors:"+ builder);
+        MQEasyCommon.getCommon().getLogger().info("Version:"+mqEasyPlugin.getPluginInfo().getVersion());
+        MQEasyCommon.getCommon().getLogger().info("Website:"+mqEasyPlugin.getPluginInfo().getWebsite());
+        MQEasyCommon.getCommon().getLogger().info("Description:"+mqEasyPlugin.getPluginInfo().getDescription());
+        MQEasyCommon.getCommon().getLogger().info("+++++++++++++++[MQEasy-New-Plugin]+++++++++++++++");
         return true;
     }
 

@@ -1,17 +1,30 @@
 package top.jingwenmc.mqeasy.api.plugin;
 
 import lombok.Getter;
+import top.jingwenmc.mqeasy.api.MQEasyApi;
 import top.jingwenmc.mqeasy.api.message.CommonMessage;
 import top.jingwenmc.mqeasy.api.message.MessageType;
 import top.jingwenmc.mqeasy.api.message.Receipt;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Consumer;
 
 public abstract class MQEasyPlugin {
+
+    public MQEasyPlugin() {
+        api =  new MQEasyApi(this);
+        timer = new Timer();
+    }
+
+    private final Timer timer;
+
     @Getter
-    final Map<String, Consumer<CommonMessage<Receipt<?>>>> returningMap = new HashMap<>();
+    private final MQEasyApi api;
+
+    private final Map<String, Consumer<CommonMessage<Receipt<?>>>> returningMap = new HashMap<>();
 
     /**
      * Get plugin's info
@@ -42,6 +55,19 @@ public abstract class MQEasyPlugin {
                 Consumer<CommonMessage<Receipt<?>>> consumer = returningMap.get(id);
                 consumer.accept(message);
             }
+            returningMap.remove(id);
         }
+    }
+
+    public final boolean addConsumer(String id, Consumer<CommonMessage<Receipt<?>>> messageConsumer) {
+        if(returningMap.containsKey(id)) return false;
+        returningMap.put(id,messageConsumer);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                returningMap.remove(id);
+            }
+        },10000);
+        return true;
     }
 }
