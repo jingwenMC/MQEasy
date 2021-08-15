@@ -65,7 +65,7 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
                                     = MQEasyCommon.getCommon().getPluginManager().sendNeedReturnMessageToPlugin(plugin,commonMessage);
                             if(receipt!=null)
                             MQEasyCommon.getCommon().getMessenger().produceMessage(
-                                    new CommonMessage<Receipt>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_PLAYER
+                                    new CommonMessage<>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_PLAYER
                                             , MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(), commonMessage.getFrom(), receipt));
                         }
                     case SERVER_WITH_RETURN:
@@ -75,7 +75,7 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
                                     = MQEasyCommon.getCommon().getPluginManager().sendNeedReturnMessageToPlugin(plugin,commonMessage);
                             if(receipt!=null)
                             MQEasyCommon.getCommon().getMessenger().produceMessage(
-                                    new CommonMessage<Receipt>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_SERVER
+                                    new CommonMessage<>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_SERVER
                                             , MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(), commonMessage.getFrom(), receipt));
                         }
                     case RETURNING_MESSAGE_PLAYER:

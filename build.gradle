@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'top.jingwenmc'
-version = '1.1.0-BETA'
+version = '1.1.0-RELEASE'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -45,4 +45,10 @@ jar {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+shadowJar {
+    relocate 'org', 'top.jingwenmc.mqeasy.lib.org'
+    relocate 'javax', 'top.jingwenmc.mqeasy.lib.javax'
+    relocate 'com', 'top.jingwenmc.mqeasy.lib.com'
 }
