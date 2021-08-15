@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Receipt<T> {
-    T returning;
+public class Receipt {
+    String returning;
 }

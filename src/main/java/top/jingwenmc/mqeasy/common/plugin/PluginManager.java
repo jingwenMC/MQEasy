@@ -29,19 +29,19 @@ public class PluginManager {
         return true;
     }
 
-    public void sendMessageToPlugin(String plugin, CommonMessage<?> message) {
+    public void sendMessageToPlugin(String plugin, CommonMessage<String> message) {
         if(!pluginMap.containsKey(plugin))return;
         MQEasyPlugin mqEasyPlugin = pluginMap.get(plugin);
         mqEasyPlugin.onReceiveNoReturn(message.getMessageType(), message.getTo(), message);
     }
 
-    public Receipt<?> sendNeedReturnMessageToPlugin(String plugin, CommonMessage<?> message) {
+    public Receipt sendNeedReturnMessageToPlugin(String plugin, CommonMessage<String> message) {
         if(!pluginMap.containsKey(plugin))return null;
         MQEasyPlugin mqEasyPlugin = pluginMap.get(plugin);
         return mqEasyPlugin.onReceiveNeedReturn(message.getMessageType(), message.getTo(), message);
     }
 
-    public void sendReturnMessageToPlugin(String plugin, CommonMessage<Receipt<?>> message) {
+    public void sendReturnMessageToPlugin(String plugin, CommonMessage<Receipt> message) {
         if(!pluginMap.containsKey(plugin))return;
         MQEasyPlugin mqEasyPlugin = pluginMap.get(plugin);
         mqEasyPlugin.onReceiveReturnMessage(message.getMessageType(),message.getId(),message);

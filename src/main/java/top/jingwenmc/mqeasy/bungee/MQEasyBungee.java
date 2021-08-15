@@ -105,6 +105,11 @@ public class MQEasyBungee extends Plugin {
         }
         MQEasyCommon.getCommon().setLoaded(false);
         getLogger().info("Disable Complete!");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         getLogger().info("+++++++++++++++[MQEasy-Disable-Complete]+++++++++++++++");
         getLogger().info("MQEasy Disable Complete!");
         getLogger().info("Version:"+this.getDescription().getVersion());

@@ -9,7 +9,6 @@ import top.jingwenmc.mqeasy.api.message.Receipt;
 import top.jingwenmc.mqeasy.api.plugin.MQEasyPlugin;
 import top.jingwenmc.mqeasy.common.MQEasyCommon;
 
-import javax.jms.JMSException;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -28,12 +27,12 @@ public class MQEasyApi {
      * @throws MQEasyNotLoadException
      * @throws IdAlreadyExistException
      */
-    public void sendMessageToPlayerNeedReturn(String to, Object body, Consumer<CommonMessage<Receipt<?>>> messageConsumer) throws MQEasyNotLoadException, IdAlreadyExistException {
+    public void sendMessageToPlayerNeedReturn(String to, String body, Consumer<CommonMessage<Receipt>> messageConsumer) throws MQEasyNotLoadException, IdAlreadyExistException {
         if(!MQEasyCommon.getCommon().isLoaded()) {
             throw new MQEasyNotLoadException("MQEasy Not Loaded.");
         }
         String id = UUID.randomUUID().toString();
-        CommonMessage<?> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.PLAYER_WITH_RETURN,
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.PLAYER_WITH_RETURN,
                 MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
         if(!plugin.addConsumer(id,messageConsumer)) throw new IdAlreadyExistException("Message ID already exist!");
         MQEasyCommon.getCommon().getMessenger().createTopic(commonMessage);
@@ -47,12 +46,12 @@ public class MQEasyApi {
      * @throws MQEasyNotLoadException
      * @throws IdAlreadyExistException
      */
-    public void sendMessageToServerNeedReturn(String to, Object body, Consumer<CommonMessage<Receipt<?>>> messageConsumer) throws MQEasyNotLoadException, IdAlreadyExistException {
+    public void sendMessageToServerNeedReturn(String to, String body, Consumer<CommonMessage<Receipt>> messageConsumer) throws MQEasyNotLoadException, IdAlreadyExistException {
         if(!MQEasyCommon.getCommon().isLoaded()) {
             throw new MQEasyNotLoadException("MQEasy Not Loaded.");
         }
         String id = UUID.randomUUID().toString();
-        CommonMessage<?> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.SERVER_WITH_RETURN,
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.SERVER_WITH_RETURN,
                 MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
         if(!plugin.addConsumer(id,messageConsumer)) throw new IdAlreadyExistException("Message ID already exist!");
         MQEasyCommon.getCommon().getMessenger().produceMessage(commonMessage);
@@ -64,12 +63,12 @@ public class MQEasyApi {
      * @param body the body of message
      * @throws MQEasyNotLoadException
      */
-    public void sendMessageToPlayerNoReturn(String to, Object body) throws MQEasyNotLoadException {
+    public void sendMessageToPlayerNoReturn(String to, String body) throws MQEasyNotLoadException {
         if(!MQEasyCommon.getCommon().isLoaded()) {
             throw new MQEasyNotLoadException("MQEasy Not Loaded.");
         }
         String id = UUID.randomUUID().toString();
-        CommonMessage<?> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.PLAYER_NO_RETURN,
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.PLAYER_NO_RETURN,
                 MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
         MQEasyCommon.getCommon().getMessenger().createTopic(commonMessage);
     }
@@ -80,12 +79,12 @@ public class MQEasyApi {
      * @param body the body of message
      * @throws MQEasyNotLoadException
      */
-    public void sendMessageToServerNoReturn(String to, Object body) throws MQEasyNotLoadException {
+    public void sendMessageToServerNoReturn(String to, String body) throws MQEasyNotLoadException {
         if(!MQEasyCommon.getCommon().isLoaded()) {
             throw new MQEasyNotLoadException("MQEasy Not Loaded.");
         }
         String id = UUID.randomUUID().toString();
-        CommonMessage<?> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.SERVER_NO_RETURN,
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.SERVER_NO_RETURN,
                 MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
         MQEasyCommon.getCommon().getMessenger().produceMessage(commonMessage);
     }

@@ -24,7 +24,7 @@ public abstract class MQEasyPlugin {
     @Getter
     private final MQEasyApi api;
 
-    private final Map<String, Consumer<CommonMessage<Receipt<?>>>> returningMap = new HashMap<>();
+    private final Map<String, Consumer<CommonMessage<Receipt>>> returningMap = new HashMap<>();
 
     /**
      * Get plugin's info
@@ -38,7 +38,7 @@ public abstract class MQEasyPlugin {
      * @param to The destination, can be a player or server name
      * @param message The full message
      */
-    public abstract void onReceiveNoReturn(MessageType messageType, String to, CommonMessage<?> message);
+    public abstract void onReceiveNoReturn(MessageType messageType, String to, CommonMessage<String> message);
 
     /**
      * What your plugin will do on receiving a message that have to return
@@ -47,19 +47,19 @@ public abstract class MQEasyPlugin {
      * @param message The full message
      * @return A receipt message
      */
-    public abstract Receipt<?> onReceiveNeedReturn(MessageType messageType, String to, CommonMessage<?> message);
+    public abstract Receipt onReceiveNeedReturn(MessageType messageType, String to, CommonMessage<String> message);
 
-    public final void onReceiveReturnMessage(MessageType messageType, String id, CommonMessage<Receipt<?>> message) {
+    public final void onReceiveReturnMessage(MessageType messageType, String id, CommonMessage<Receipt> message) {
         if(messageType.equals(MessageType.RETURNING_MESSAGE_PLAYER) || messageType.equals(MessageType.RETURNING_MESSAGE_SERVER)) {
             if(returningMap.containsKey(id)) {
-                Consumer<CommonMessage<Receipt<?>>> consumer = returningMap.get(id);
+                Consumer<CommonMessage<Receipt>> consumer = returningMap.get(id);
                 consumer.accept(message);
             }
             returningMap.remove(id);
         }
     }
 
-    public final boolean addConsumer(String id, Consumer<CommonMessage<Receipt<?>>> messageConsumer) {
+    public final boolean addConsumer(String id, Consumer<CommonMessage<Receipt>> messageConsumer) {
         if(returningMap.containsKey(id)) return false;
         returningMap.put(id,messageConsumer);
         timer.schedule(new TimerTask() {
