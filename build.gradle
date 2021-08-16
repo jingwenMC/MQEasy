@@ -1,5 +1,4 @@
 import org.apache.tools.ant.filters.ReplaceTokens
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 
 plugins {
     id 'java'
@@ -47,11 +46,3 @@ jar {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-
-task relocateShadowJar(type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-    prefix = "top.jingwenmc.mqeasy.lib"
-
-}
-
-tasks.shadowJar.dependsOn tasks.relocateShadowJar
