@@ -15,7 +15,7 @@ import top.jingwenmc.mqeasy.common.platform.PlatformType;
 public class MQEasyBungee extends Plugin {
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         // Plugin startup logic
         instance = this;
         getLogger().info("Loading Configuration...");

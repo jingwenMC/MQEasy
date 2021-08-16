@@ -18,7 +18,7 @@ import javax.jms.JMSException;
 public final class MQEasyBukkit extends JavaPlugin {
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         // Plugin startup logic
         instance = this;
         getLogger().info("Loading Configuration...");
