@@ -48,7 +48,9 @@ tasks.withType(JavaCompile) {
 }
 
 shadowJar {
-    relocate 'org', 'top.jingwenmc.mqeasy.lib.org'
+    relocate ('org', 'top.jingwenmc.mqeasy.lib.org') {
+        exclude 'org.bukkit**'
+    }
     relocate 'javax', 'top.jingwenmc.mqeasy.lib.javax'
     relocate 'com', 'top.jingwenmc.mqeasy.lib.com'
 }
