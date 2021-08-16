@@ -1,4 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 
 plugins {
     id 'java'
@@ -6,7 +7,7 @@ plugins {
 }
 
 group = 'top.jingwenmc'
-version = '1.1.1-RELEASE'
+version = '1.1.2-RELEASE'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -47,10 +48,10 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-shadowJar {
-    relocate ('org', 'top.jingwenmc.mqeasy.lib.org') {
-        exclude 'org.bukkit**'
-    }
-    relocate 'javax', 'top.jingwenmc.mqeasy.lib.javax'
-    relocate 'com', 'top.jingwenmc.mqeasy.lib.com'
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "top.jingwenmc.mqeasy.lib"
+
 }
+
+tasks.shadowJar.dependsOn tasks.relocateShadowJar
