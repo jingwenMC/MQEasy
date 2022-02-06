@@ -46,9 +46,15 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
                 read.add(commonMessage.getId());
                 MQEasyCommon.debug("CommonMessage Get:"+commonMessage);
                 switch (commonMessage.getMessageType()) {
-                    case PLAYER_NO_RETURN:
+                    case BUKKIT_PLAYER_NO_RETURN:
                         if(MQEasyCommon.isOnline(commonMessage.getTo()) &&
                                 MQEasyCommon.getCommon().getPlatformInfo().getPlatformType().equals(PlatformType.BUKKIT)) {
+                            String plugin = commonMessage.getPlugin();
+                            MQEasyCommon.getCommon().getPluginManager().sendMessageToPlugin(plugin,commonMessage);
+                        }
+                    case BUNGEE_PLAYER_NO_RETURN:
+                        if(MQEasyCommon.isOnline(commonMessage.getTo()) &&
+                                MQEasyCommon.getCommon().getPlatformInfo().getPlatformType().equals(PlatformType.BUNGEE)) {
                             String plugin = commonMessage.getPlugin();
                             MQEasyCommon.getCommon().getPluginManager().sendMessageToPlugin(plugin,commonMessage);
                         }
@@ -57,7 +63,7 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
                             String plugin = commonMessage.getPlugin();
                             MQEasyCommon.getCommon().getPluginManager().sendMessageToPlugin(plugin,commonMessage);
                         }
-                    case PLAYER_WITH_RETURN:
+                    case BUKKIT_PLAYER_WITH_RETURN:
                         if(MQEasyCommon.isOnline(commonMessage.getTo()) &&
                                 MQEasyCommon.getCommon().getPlatformInfo().getPlatformType().equals(PlatformType.BUKKIT)) {
                             String plugin = commonMessage.getPlugin();
@@ -65,8 +71,19 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
                                     = MQEasyCommon.getCommon().getPluginManager().sendNeedReturnMessageToPlugin(plugin,commonMessage);
                             if(receipt!=null)
                             MQEasyCommon.getCommon().getMessenger().produceMessage(
-                                    new CommonMessage<>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_PLAYER
+                                    new CommonMessage<>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_BUKKIT_PLAYER
                                             , MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(), commonMessage.getFrom(), receipt));
+                        }
+                    case BUNGEE_PLAYER_WITH_RETURN:
+                        if(MQEasyCommon.isOnline(commonMessage.getTo()) &&
+                                MQEasyCommon.getCommon().getPlatformInfo().getPlatformType().equals(PlatformType.BUNGEE)) {
+                            String plugin = commonMessage.getPlugin();
+                            Receipt receipt
+                                    = MQEasyCommon.getCommon().getPluginManager().sendNeedReturnMessageToPlugin(plugin,commonMessage);
+                            if(receipt!=null)
+                                MQEasyCommon.getCommon().getMessenger().produceMessage(
+                                        new CommonMessage<>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_BUNGEE_PLAYER
+                                                , MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(), commonMessage.getFrom(), receipt));
                         }
                     case SERVER_WITH_RETURN:
                         if(commonMessage.getTo().equals(MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId())) {
@@ -78,7 +95,8 @@ public class MQEasyMessageListener implements MessageListener,ExceptionListener{
                                     new CommonMessage<>(commonMessage.getPlugin(), commonMessage.getId(), MessageType.RETURNING_MESSAGE_SERVER
                                             , MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(), commonMessage.getFrom(), receipt));
                         }
-                    case RETURNING_MESSAGE_PLAYER:
+                    case RETURNING_MESSAGE_BUKKIT_PLAYER:
+                    case RETURNING_MESSAGE_BUNGEE_PLAYER:
                     case RETURNING_MESSAGE_SERVER:
                         if(commonMessage.getTo().equals(MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId())) {
                             String plugin = commonMessage.getPlugin();

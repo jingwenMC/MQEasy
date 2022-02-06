@@ -50,7 +50,7 @@ public abstract class MQEasyPlugin {
     public abstract Receipt onReceiveNeedReturn(MessageType messageType, String to, CommonMessage<String> message);
 
     public final void onReceiveReturnMessage(MessageType messageType, String id, CommonMessage<Receipt> message) {
-        if(messageType.equals(MessageType.RETURNING_MESSAGE_PLAYER) || messageType.equals(MessageType.RETURNING_MESSAGE_SERVER)) {
+        if(messageType.equals(MessageType.RETURNING_MESSAGE_BUKKIT_PLAYER) || messageType.equals(MessageType.RETURNING_MESSAGE_SERVER)) {
             if(returningMap.containsKey(id)) {
                 Consumer<CommonMessage<Receipt>> consumer = returningMap.get(id);
                 consumer.accept(message);

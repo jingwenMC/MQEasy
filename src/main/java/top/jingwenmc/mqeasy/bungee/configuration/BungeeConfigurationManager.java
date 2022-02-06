@@ -17,7 +17,7 @@ public class BungeeConfigurationManager implements ConfigurationManager {
     public ConfigurationInfo loadConfiguration() throws IllegalStateException{
         BrokerConfigurationInfo brokerConfigurationInfo =
                 new BrokerConfigurationInfo(getBooleanIfExist("broker.enable"),getStringIfExist("broker.ipport"));
-        return new ConfigurationInfo(brokerConfigurationInfo,getStringIfExist("remote.ipport"),"bungee",getBooleanIfExist("debug"));
+        return new ConfigurationInfo(brokerConfigurationInfo,getStringIfExist("remote.ipport"),getStringIfExist("id"),getBooleanIfExist("debug"));
     }
 
     public String getStringIfExist(String key) throws IllegalStateException {

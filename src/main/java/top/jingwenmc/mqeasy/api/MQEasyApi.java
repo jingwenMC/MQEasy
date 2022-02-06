@@ -27,12 +27,12 @@ public class MQEasyApi {
      * @throws MQEasyNotLoadException
      * @throws IdAlreadyExistException
      */
-    public void sendMessageToPlayerNeedReturn(String to, String body, Consumer<CommonMessage<Receipt>> messageConsumer) throws MQEasyNotLoadException, IdAlreadyExistException {
+    public void sendMessageToBukkitPlayerNeedReturn(String to, String body, Consumer<CommonMessage<Receipt>> messageConsumer) throws MQEasyNotLoadException, IdAlreadyExistException {
         if(!MQEasyCommon.getCommon().isLoaded()) {
             throw new MQEasyNotLoadException("MQEasy Not Loaded.");
         }
         String id = UUID.randomUUID().toString();
-        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.PLAYER_WITH_RETURN,
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.BUKKIT_PLAYER_WITH_RETURN,
                 MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
         if(!plugin.addConsumer(id,messageConsumer)) throw new IdAlreadyExistException("Message ID already exist!");
         MQEasyCommon.getCommon().getMessenger().createTopic(commonMessage);
@@ -63,13 +63,48 @@ public class MQEasyApi {
      * @param body the body of message
      * @throws MQEasyNotLoadException
      */
-    public void sendMessageToPlayerNoReturn(String to, String body) throws MQEasyNotLoadException {
+    public void sendMessageToBukkitPlayerNoReturn(String to, String body) throws MQEasyNotLoadException {
         if(!MQEasyCommon.getCommon().isLoaded()) {
             throw new MQEasyNotLoadException("MQEasy Not Loaded.");
         }
         String id = UUID.randomUUID().toString();
-        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.PLAYER_NO_RETURN,
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.BUKKIT_PLAYER_NO_RETURN,
                 MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
+        MQEasyCommon.getCommon().getMessenger().createTopic(commonMessage);
+    }
+
+    /**
+     * Send a message that don't need to return to a player inside the network on bungeecord instance
+     * @param to the destination player
+     * @param body the body of message
+     * @throws MQEasyNotLoadException
+     */
+    public void sendMessageToBungeePlayerNoReturn(String to, String body) throws MQEasyNotLoadException {
+        if(!MQEasyCommon.getCommon().isLoaded()) {
+            throw new MQEasyNotLoadException("MQEasy Not Loaded.");
+        }
+        String id = UUID.randomUUID().toString();
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.BUNGEE_PLAYER_NO_RETURN,
+                MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
+        MQEasyCommon.getCommon().getMessenger().createTopic(commonMessage);
+    }
+
+    /**
+     * Send a message that need return to a player inside the network on bungeecord instance
+     * @param to the destination player
+     * @param body the body of message
+     * @param messageConsumer what your plugin will do on receiving return message
+     * @throws MQEasyNotLoadException
+     * @throws IdAlreadyExistException
+     */
+    public void sendMessageToBungeePlayerNeedReturn(String to, String body, Consumer<CommonMessage<Receipt>> messageConsumer) throws MQEasyNotLoadException, IdAlreadyExistException {
+        if(!MQEasyCommon.getCommon().isLoaded()) {
+            throw new MQEasyNotLoadException("MQEasy Not Loaded.");
+        }
+        String id = UUID.randomUUID().toString();
+        CommonMessage<String> commonMessage = new CommonMessage<>(plugin.getPluginInfo().getName(),id, MessageType.BUNGEE_PLAYER_WITH_RETURN,
+                MQEasyCommon.getCommon().getPlatformInfo().getConfigurationInfo().getId(),to,body);
+        if(!plugin.addConsumer(id,messageConsumer)) throw new IdAlreadyExistException("Message ID already exist!");
         MQEasyCommon.getCommon().getMessenger().createTopic(commonMessage);
     }
 
