@@ -3,6 +3,7 @@ package top.jingwenmc.mqeasy.bungee;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.bukkit.Bukkit;
 import top.jingwenmc.mqeasy.bungee.configuration.BungeeConfigurationManager;
 import top.jingwenmc.mqeasy.common.MQEasyCommon;
 import top.jingwenmc.mqeasy.common.broker.MQEasyBrokerService;
