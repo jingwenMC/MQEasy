@@ -71,11 +71,8 @@ public class MQEasyBungee extends Plugin {
         }
         getLogger().info("Finalizing...");
         MQEasyCommon.getCommon().setOnlineValidator(player -> {
-            boolean online = false;
-            for(ProxiedPlayer player1 : getProxy().getPlayers()) {
-                if(player1.getName().equals(player))online = true;
-            }
-            return online;
+            System.out.println(getProxy().getPlayer(player));
+            return getProxy().getPlayer(player)!=null;
         });
         MQEasyCommon.getCommon().setLoaded(true);
         getLogger().info("Load Complete!");
