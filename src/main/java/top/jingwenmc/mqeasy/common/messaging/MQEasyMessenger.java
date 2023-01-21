@@ -47,6 +47,7 @@ public class MQEasyMessenger {
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
                 Queue queue = session.createQueue(message.getTo());
                 MessageProducer producer = session.createProducer(queue);
+                producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT); //In most cases we use non-persistent, will be configurable in future version
                 if(message.getId().isEmpty())
                 message.setId(UUID.randomUUID().toString());
                 TextMessage textMessage = session.createTextMessage(MQEasyCommon.getCommon()
@@ -79,6 +80,7 @@ public class MQEasyMessenger {
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
                 Topic topic = session.createTopic(MQEasyCommon.MQEASY_GLOBAL_TOPIC);
                 MessageProducer producer = session.createProducer(topic);
+                producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT); //In most cases we use non-persistent, will be configurable in future version
                 if(message.getId().isEmpty())
                 message.setId(UUID.randomUUID().toString());
                 TextMessage textMessage = session.createTextMessage(MQEasyCommon.getCommon()
