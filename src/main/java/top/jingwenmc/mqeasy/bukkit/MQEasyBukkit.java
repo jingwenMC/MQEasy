@@ -75,13 +75,7 @@ public final class MQEasyBukkit extends JavaPlugin {
             return;
         }
         getLogger().info("Finalizing...");
-        MQEasyCommon.getCommon().setOnlineValidator(player -> {
-            boolean online = false;
-            for(Player player1 : Bukkit.getOnlinePlayers()) {
-                if(player1.getName().equals(player))online = true;
-            }
-            return online;
-        });
+        MQEasyCommon.getCommon().setOnlineValidator(player -> Bukkit.getPlayer(player) != null);
         MQEasyCommon.getCommon().setLoaded(true);
         getLogger().info("Load Complete!");
         getLogger().info("+++++++++++++++[MQEasy-Load-Complete]+++++++++++++++");
